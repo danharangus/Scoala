@@ -31,7 +31,7 @@ int main() {
         cout << v[n];
     }
     else {
-        for(int i = 1; t < n; i++) { // Problema: nu se stie cat de multe numere adauga fiecare iterare
+        for(int i = 1; t < n; i++) { // Problema: nu se stie cat de multe numere adauga fiecare iterare si atunci trb sa iau numere in plus
             p = v[i] * a;
             foo(p);
             p = v[i] * b;
