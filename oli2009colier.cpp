@@ -20,12 +20,15 @@ int main() {
     for(int i = 0; i < p; i++) {
         inf >> arr[i];
     }
-    fill(ap, ap + 1000, 1);
+    fill(ap, ap + 1000, 0);
     for(int i = 1; arr[i]; i++) {
         if(arr[i-1] == arr[i]) {
-            ap[arr[i]]++;
+            ap[t]++;
+        }
+        else {
+            t = 0;
         }
     }
-    cout << *max_element(ap, ap+1000) - 1;
+    cout << *max_element(ap, ap+1000);
     return 0;
 }
