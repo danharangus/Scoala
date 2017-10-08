@@ -60,7 +60,7 @@ void fun() {
         v.insert(v.begin() + x, m);
         cout << m;
         cin.ignore();
-    }
+    } 
     siruri = 0;
     return;
 }
