@@ -3,7 +3,7 @@
 #include <cmath>
 
 using namespace std;
-
+ 
 ifstream inf("date.in");
 ofstream outf("date.out");
 
