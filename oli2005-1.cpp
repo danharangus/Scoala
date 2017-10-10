@@ -1,85 +1,75 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
 ifstream inf("numar.in");
 ofstream outf("numar.out");
 
-int n, x, siruri = 0;
+int n, t, ln = 0, lnmax = 0, startcheck = 0, a;
 vector<int> v;
-int tocheck[50][2];
+vector<int> cifremax;
 
-
-void maxdig(int a, int &m) {
-    do {
-        int t = a % 10;
-        if(t > m) {
-            m = t;
+void foo(int x, int y) {
+    int m = 0;
+    for(int i = x+1; i <= y; i++) {
+        if(cifremax[i] > m) {
+            m = cifremax[i];
         }
-        a /= 10;
-    } while(a > 0);
+        v.erase(v.begin() + x);
+        cifremax.erase(cifremax.begin() + x);
+    }
+    v[x] = m;
+    cifremax[x] = m;
     return;
 }
 
-int foo() { // ne dam seama ce vrem sa prelucram
-    int t = 0; // dim sirului - 1
-    int temp; // poz de inceput a sirului
-    for(int i = 0; i+1 < v.size(); i++) {
-        while(v[i] < v[i+1]) {
-            if(t == 0) {
-                temp = i;
+int bar() {
+    ln = 0;
+    for(int i = 1; i < v.size(); i++) {
+        if(v[i-1] < v[i]) {
+            ln++;
+            a++;
+        }
+        else {
+            if(ln > lnmax) {
+                lnmax = ln;
+                startcheck = i - ln - 1;
             }
-            t++;
-            i++;
+            ln = 0;
         }
-        if(t) {
-            tocheck[siruri][0] = t+1;
-            tocheck[siruri][1] = temp - tocheck[siruri-1][0];
-            siruri++;
-        }
-        t = 0;
-        temp = 0;
     }
-    if(siruri) {
-        return 1;
+    if(a == 0) {
+        return 0;
     }
-    return 0;
-}
-
-void fun() {
-    for(int i = 0; i < siruri; i++) {
-        int m = 0;
-        int s = tocheck[siruri][0];
-        int x = tocheck[siruri][1];
-        for(int i = 0; i < s; i++) {
-            maxdig(v[x], m);
-            v.erase(v.begin() + x);
-        } //Problema: m nu se schimba deloc?
-        v.insert(v.begin() + x, m);
-        cout << m;
-        cin.ignore();
-    } 
-    siruri = 0;
-    return;
+    foo(startcheck, startcheck + ln);
+    lnmax = 0;
+    a = 0;
+    return 1;
 }
 
 int main() {
     inf >> n;
     for(int i = 0; i < n; i++) {
-        int t;
         inf >> t;
         v.push_back(t);
+        int m = 0;
+        do{
+            int x  = t % 10;
+            if(x > m) {
+                m = x;
+            }
+            t /= 10;
+        } while(t > 0);
+        cifremax.push_back(m);
     }
-    foo(); // pana aici e bine ;)
-    for(int i = 0; i < siruri; i++) {
-        cout << tocheck[i][0] << "  " << tocheck[i][1];
-        cin.ignore();
+    while(bar()) {}
+    for(int i = 0; i < v.size(); i++) {
+        cout << v[i] << endl;
     }
-    fun();
-   /* while(foo()) {
-        fun();
-    } */
+    cout << *max_element(v.begin(), v.begin() + v.size()) << " " << *min_element(v.begin(), v.begin() + v.size());
     return 0;
 }
+
