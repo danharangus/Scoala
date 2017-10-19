@@ -5,24 +5,25 @@ using namespace std;
 
 ifstream inf("panta.in");
 
-int n;
-string m;
+int n, m;
 
-bool panta(string x) {
-    for(int i = 0; i < x.length(); i++) {
-        if(x[i] < x[i+1]) {
+bool panta1(int x) {
+    do {
+        if(x % 10 <= (x / 10) % 10) {
             return false;
         }
-    }
+        x /= 10;
+    } while(x > 10);
     return true;
 }
 
-bool panta(string x, bool b) {
-    for(int i = 0; i < x.length(); i++) {
-        if(x[i] > x[i+1]) {
+bool panta2(int x) {
+    do {
+        if(x % 10 >= (x / 10) % 10) {
             return false;
         }
-    }
+        x /= 10;
+    } while(x > 10);
     return true;
 }
 
@@ -30,9 +31,9 @@ int main() {
     inf >> n;
     int t = 0;
     for(int i = 0; i < n; i++) {
-        string temp;
+        int temp;
         inf >> temp;
-        if(panta(temp) || panta(temp, true)) {
+        if(panta1(temp) || panta2(temp)) {
             t++;
             if(temp > m) {
                 m = temp;
