@@ -12,7 +12,7 @@ bool comp(vector<int>& a, vector<int>& b) {
 array< vector<int>, 51 > v;
 
 struct compq {
-    bool operator() (vector<int>& a, vector<int>& b) {
+    bool operator() (const vector<int>& a, const vector<int>& b) {
         return(a.size() < b.size());
     }
 };
@@ -40,11 +40,29 @@ int main() {
     outf << nrjud;
     outf.seekp(0, ios_base::end);
     outf << endl;
-    for(int i = 1; i < 52; i++) {
+    for(int i = 1; i < 51; i++) {
         if(v[i].size()) {
             sort(v[i].begin(), v[i].end(), greater<int>());
             v[i].insert(v[i].begin(), i);
             q.push(v[i]);
+        }
+    }
+    while(!q.empty()) {
+        vector<int> v1(q.top());
+        q.pop();
+        outf << v1[0] << " " << v1[v1.size() - 1] << endl;
+        v1.pop_back();
+        if(!q.empty()) {
+            vector<int> v2(q.top());
+            q.pop();
+            outf << v2[0] << " " << v2[v2.size() - 1] << endl;
+            v2.pop_back();
+            if(v2.size() > 1) {
+                q.push(v2);
+            }
+        }
+        if(v1.size() > 1) {
+            q.push(v1);
         }
     }
     return 0;
